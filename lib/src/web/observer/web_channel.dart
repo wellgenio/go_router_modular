@@ -1,3 +1,5 @@
+import 'dart:html' as html;
+
 void replaceBrowserUrl(String url) {
-  // No-op for non-web platforms
+  html.window.history.replaceState(null, '', url);
 }
