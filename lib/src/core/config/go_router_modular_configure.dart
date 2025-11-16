@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router_modular/src/core/bind/bind.dart';
 import 'package:go_router_modular/src/internal/asserts/go_router_modular_configure_assert.dart';
 import 'package:go_router_modular/src/internal/setup.dart';
 import 'package:go_router_modular/src/core/module/module.dart';
+import 'package:go_router_modular/src/web/observer/browser_replace_observer.dart';
 import 'package:go_transitions/go_transitions.dart';
 
 /// Alias to simplify the use of GoRouterModular.
@@ -184,6 +186,12 @@ class GoRouterModular {
       '❌ delayDisposeMilliseconds must be at least 500ms - Check `go_router_modular main.dart`.',
     );
     modularNavigatorKey = navigatorKey ?? GlobalKey<NavigatorState>();
+
+    List<NavigatorObserver> _relativeObservers = [...?observers];
+    if (kIsWeb) {
+      _relativeObservers.add(BrowserReplaceObserver());
+    }
+
     _router = GoRouter(
       routes: appModule.configureRoutes(topLevel: true),
       initialLocation: initialRoute,
@@ -193,7 +201,7 @@ class GoRouterModular {
       extraCodec: extraCodec,
       initialExtra: initialExtra,
       navigatorKey: modularNavigatorKey,
-      observers: observers,
+      observers: _relativeObservers.isNotEmpty ? _relativeObservers : null,
       onException: onException,
       overridePlatformDefaultLocation: overridePlatformDefaultLocation,
       redirect: redirect,

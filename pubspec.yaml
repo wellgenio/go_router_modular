@@ -11,6 +11,8 @@ environment:
 
 dependencies:
   event_bus: ^2.0.1
+  flutter_web_plugins:
+    sdk: flutter
   flutter:
     sdk: flutter
   go_router: ^16.0.0

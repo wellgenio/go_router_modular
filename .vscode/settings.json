@@ -13,5 +13,9 @@
         "*.html": "html",
         "*.css": "css",
         "*.js": "javascript"
+    },
+    "editor.tokenColorCustomizations": {
+        "comments": "",
+        "textMateRules": []
     }
 }
